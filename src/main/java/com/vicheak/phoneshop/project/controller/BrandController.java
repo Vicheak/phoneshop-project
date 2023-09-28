@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.vicheak.phoneshop.project.dto.BrandDTO;
 import com.vicheak.phoneshop.project.entity.Brand;
+import com.vicheak.phoneshop.project.mapper.BrandMapper;
 import com.vicheak.phoneshop.project.service.BrandService;
-import com.vicheak.phoneshop.project.service.util.Mapper;
 
 @RestController
 @RequestMapping("brands")
@@ -25,23 +25,25 @@ public class BrandController {
 	//create handler method
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<?> create(@RequestBody BrandDTO brandDTO) {
-		Brand brand = Mapper.toBrand(brandDTO);
+		//Brand brand = Mapper.toBrand(brandDTO);
+		Brand brand = BrandMapper.INSTANCE.toBrand(brandDTO);
 		brand = brandService.create(brand);
-		return ResponseEntity.ok(Mapper.toBrandDTO(brand));  
+		return ResponseEntity.ok(BrandMapper.INSTANCE.toBrandDTO(brand));  
 	}
 	
 	@GetMapping("{id}")
 	public ResponseEntity<?> getOneBrand(@PathVariable("id") Integer brandId){
 		Brand brand = brandService.getById(brandId);
-		return ResponseEntity.ok(Mapper.toBrandDTO(brand)); 
+		return ResponseEntity.ok(BrandMapper.INSTANCE.toBrandDTO(brand)); 
 	}
 	
 	@PutMapping("{id}")
 	public ResponseEntity<?> updateBrand(@PathVariable("id") Integer brandId,
 										 @RequestBody BrandDTO brandDTO){
-		Brand brand = Mapper.toBrand(brandDTO);
+		//Brand brand = Mapper.toBrand(brandDTO);
+		Brand brand = BrandMapper.INSTANCE.toBrand(brandDTO);
 		brand = brandService.update(brandId, brand);
-		return ResponseEntity.ok(Mapper.toBrandDTO(brand));  
+		return ResponseEntity.ok(BrandMapper.INSTANCE.toBrandDTO(brand));  
 	}
 	
 }
