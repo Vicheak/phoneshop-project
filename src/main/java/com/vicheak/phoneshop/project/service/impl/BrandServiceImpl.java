@@ -22,10 +22,15 @@ import com.vicheak.phoneshop.project.service.util.PageUtil;
 import com.vicheak.phoneshop.project.spec.BrandFilter;
 import com.vicheak.phoneshop.project.spec.BrandSpec;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class BrandServiceImpl implements BrandService{
 	@Autowired
-	private BrandRepository brandRepository;
+	private final BrandRepository brandRepository;
 	
 	@Override
 	public Brand create(Brand brand) {
@@ -33,24 +38,11 @@ public class BrandServiceImpl implements BrandService{
 	}
 	
 	@Override
-	public Brand getById(Integer id) {
-		/*Optional<Brand> brandOptional = brandRepository.findById(id);
-		if(brandOptional.isPresent()) {
-			return brandOptional.get();
-		}*/
-		//throw new HttpClientErrorException(HttpStatus.NOT_FOUND, "Brand with id = " + id + " not found");
-		//throw new HttpClientErrorException(HttpStatus.NOT_FOUND, String.format("Brand with id = %d not found", id));
-		
-		/*return brandRepository.findById(id)
-				.orElseThrow(() -> 
-					new HttpClientErrorException(HttpStatus.NOT_FOUND, 
-							String.format("Brand with id = %d not found", id)));*/
-		
-		/*return brandRepository.findById(id)
-				.orElseThrow(() -> 
-					new ApiException(HttpStatus.NOT_FOUND, 
-							String.format("Brand with id = %d not found", id)));*/
-		
+	public Brand getById(Integer id) {		
+		/*Brand b = brandRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Brand", id));
+		b.setName(b.getName() + "dara");
+		return b;*/
 		return brandRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Brand", id));
 	}
@@ -61,40 +53,11 @@ public class BrandServiceImpl implements BrandService{
 		brand.setName(brandUpdate.getName()); //@TODO improve update
 		return brandRepository.save(brand);
 	}
-	
-	/*@Override
-	public List<Brand> getBrands() {
-		return brandRepository.findAll();
-	}*/
-	
+
 	@Override
 	public List<Brand> getBrands(String name) {
 		return brandRepository.findByNameContaining(name);
 	}
-	
-	/*@Override
-	public List<Brand> getBrands(Map<String, String> params) {
-		BrandFilter brandFilter = new BrandFilter();
-		
-		if(params.containsKey("name")) {
-			String name = params.get("name");
-			brandFilter.setName(name);
-		}
-		
-		if(params.containsKey("id")) {
-			String id = params.get("id");
-			try {
-				brandFilter.setId(Integer.parseInt(id));
-			}catch(NumberFormatException e) {
-				throw new ApiException(HttpStatus.NOT_ACCEPTABLE, 
-						"Brand ID must be formatted as number!");
-			}
-		}
-	
-		BrandSpec brandSpec = new BrandSpec(brandFilter);
-		
-		return brandRepository.findAll(brandSpec); 
-	}*/
 	
 	@Override
 	public Page<Brand> getBrands(Map<String, String> params) {
@@ -129,9 +92,6 @@ public class BrandServiceImpl implements BrandService{
 		BrandSpec brandSpec = new BrandSpec(brandFilter);
 		
 		Pageable pageable = PageUtil.getPageable(pageNumber, pageLimit);
-		
-		//Pageable 
-		//Page<Brand> page = brandRepository.findAll(brandSpec, Pageable.ofSize(1));
 		
 		Page<Brand> page = brandRepository.findAll(brandSpec, pageable); 
 	
