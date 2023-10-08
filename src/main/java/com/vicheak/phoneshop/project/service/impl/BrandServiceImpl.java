@@ -93,7 +93,7 @@ public class BrandServiceImpl implements BrandService{
 		
 		Pageable pageable = PageUtil.getPageable(pageNumber, pageLimit);
 		
-		Page<Brand> page = brandRepository.findAll(brandSpec, pageable); 
+		Page<Brand> page = brandRepository.findAll(brandSpec, pageable);  
 	
 		return page;
 	}
