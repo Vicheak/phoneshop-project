@@ -2,11 +2,9 @@ package com.vicheak.phoneshop.project.controller;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,17 +17,25 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vicheak.phoneshop.project.dto.BrandDTO;
+import com.vicheak.phoneshop.project.dto.ModelDTO;
 import com.vicheak.phoneshop.project.dto.PageDTO;
 import com.vicheak.phoneshop.project.entity.Brand;
+import com.vicheak.phoneshop.project.entity.Model;
 import com.vicheak.phoneshop.project.mapper.BrandMapper;
+import com.vicheak.phoneshop.project.mapper.ModelEntityMapper;
 import com.vicheak.phoneshop.project.service.BrandService;
+import com.vicheak.phoneshop.project.service.ModelService;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("brands")
 public class BrandController {
 	
-	@Autowired
-	private BrandService brandService;
+	private final BrandService brandService;
+	private final ModelService modelService; 
+	private final ModelEntityMapper modelMapper; 
 
 	//create handler method
 	@RequestMapping(method = RequestMethod.POST)
@@ -84,5 +90,14 @@ public class BrandController {
 		return ResponseEntity.ok()
 				.body(BrandMapper.INSTANCE.toBrandDTO(brand)); 
 	}*/
+	
+	@GetMapping("{id}/models")
+	public ResponseEntity<?> getModelsByBrand(@PathVariable("id") Integer brandId){
+		List<Model> models = modelService.getByBrand(brandId);
+		List<ModelDTO> list = models.stream()
+			.map(modelMapper::toModelDTO)
+			.toList(); 
+		return ResponseEntity.ok(list);   
+	}
 	
 }
