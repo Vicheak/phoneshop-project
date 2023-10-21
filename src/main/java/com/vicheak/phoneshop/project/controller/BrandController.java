@@ -6,7 +6,9 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -75,5 +77,12 @@ public class BrandController {
 			.collect(Collectors.toList());*/
 		return ResponseEntity.ok(pageDTO);
 	}
+	
+	/*@DeleteMapping("{id}")
+	public ResponseEntity<?> deleteBrand(@PathVariable("id") Integer id){
+		Brand brand = brandService.deleteById(id); 
+		return ResponseEntity.ok()
+				.body(BrandMapper.INSTANCE.toBrandDTO(brand)); 
+	}*/
 	
 }

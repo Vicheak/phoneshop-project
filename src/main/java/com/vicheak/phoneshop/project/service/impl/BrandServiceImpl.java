@@ -38,13 +38,13 @@ public class BrandServiceImpl implements BrandService{
 	}
 	
 	@Override
-	public Brand getById(Integer id) {		
+	public Brand getById(Integer brandId) {		
 		/*Brand b = brandRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Brand", id));
 		b.setName(b.getName() + "dara");
 		return b;*/
-		return brandRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("Brand", id));
+		return brandRepository.findById(brandId)
+				.orElseThrow(() -> new ResourceNotFoundException("Brand", brandId));
 	}
 	
 	@Override
@@ -97,5 +97,13 @@ public class BrandServiceImpl implements BrandService{
 	
 		return page;
 	}
+	
+	/*@Override
+	public Brand deleteById(Integer id) {
+		Brand brand = brandRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Brand", id));
+		brandRepository.delete(brand);
+		return brand; 
+	}*/
 	
 }
