@@ -10,10 +10,10 @@ import com.vicheak.phoneshop.project.entity.Model;
 import com.vicheak.phoneshop.project.service.BrandService;
 
 @Mapper(componentModel = "spring", uses = {BrandService.class})
-public interface ModelMapper {
+public interface ModelEntityMapper {
 	
 	//factory method
-	ModelMapper INSTANCE = Mappers.getMapper(ModelMapper.class); 
+	ModelEntityMapper INSTANCE = Mappers.getMapper(ModelEntityMapper.class); 
 	
 	@Mapping(target = "brand", source = "brandId")
 	Model toModel(ModelDTO dto);
