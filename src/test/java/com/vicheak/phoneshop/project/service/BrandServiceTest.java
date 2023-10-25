@@ -67,7 +67,7 @@ public class BrandServiceTest {
 	public void testGetByIdSuccess() {
 		// given
 		Brand brand = new Brand();
-		brand.setId(1);
+		brand.setId(1L);
 		brand.setName("Apple");
 
 		// when
