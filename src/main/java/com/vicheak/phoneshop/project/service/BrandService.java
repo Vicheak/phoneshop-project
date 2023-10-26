@@ -9,8 +9,8 @@ import com.vicheak.phoneshop.project.entity.Brand;
 
 public interface BrandService {
 	Brand create(Brand brand);
-	Brand getById(Integer brandId); 
-	Brand update(Integer id, Brand brandUpdate);
+	Brand getById(Long brandId); 
+	Brand update(Long id, Brand brandUpdate);
 	//List<Brand> getBrands(); 
 	List<Brand> getBrands(String name); 
 	//List<Brand> getBrands(Map<String, String> params);
