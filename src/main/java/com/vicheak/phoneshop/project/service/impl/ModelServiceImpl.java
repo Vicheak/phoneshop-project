@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.vicheak.phoneshop.project.dto.ModelDTO;
 import com.vicheak.phoneshop.project.entity.Brand;
 import com.vicheak.phoneshop.project.entity.Model;
+import com.vicheak.phoneshop.project.exception.ResourceNotFoundException;
 import com.vicheak.phoneshop.project.mapper.ModelEntityMapper;
 import com.vicheak.phoneshop.project.repository.ModelRepository;
 import com.vicheak.phoneshop.project.service.BrandService;
@@ -32,8 +33,16 @@ public class ModelServiceImpl implements ModelService{
 	}
 
 	@Override
-	public List<Model> getByBrand(Integer brandId) {
+	public List<Model> getByBrand(Long brandId) {
 		return modelRepository.findByBrandId(brandId);
+	}
+
+	@Override
+	public Model getById(Long id) {
+		return modelRepository.findById(id)
+				.orElseThrow(
+						() -> new ResourceNotFoundException("Model", id)
+				);
 	}
 
 }
