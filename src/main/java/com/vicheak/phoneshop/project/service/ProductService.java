@@ -1,5 +1,7 @@
 package com.vicheak.phoneshop.project.service;
 
+import java.math.BigDecimal;
+
 import com.vicheak.phoneshop.project.dto.ProductImportDTO;
 import com.vicheak.phoneshop.project.entity.Product;
 
@@ -14,5 +16,9 @@ public interface ProductService {
 	 * @param importDTO is the request from client
 	 */
 	void importProduct(ProductImportDTO importDTO); 
+	
+	void setSalePrice(Long productId, BigDecimal price);
+	
+	//void validateStock(Long productId, Integer numberOfUnit);  
 	
 }
