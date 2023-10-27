@@ -1,5 +1,6 @@
 package com.vicheak.phoneshop.project.entity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
@@ -22,6 +23,6 @@ public class Sale {
 	private Long id; 
 	
 	@Column(name = "sold_date")
-	private LocalDateTime soldDate; 
+	private LocalDate soldDate; 
 
 }

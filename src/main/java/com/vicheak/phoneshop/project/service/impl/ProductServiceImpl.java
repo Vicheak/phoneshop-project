@@ -1,5 +1,7 @@
 package com.vicheak.phoneshop.project.service.impl;
 
+import java.math.BigDecimal;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -62,5 +64,17 @@ public class ProductServiceImpl implements ProductService {
 		ProductImportHistory importHistory = productMapper.toProductImportHistory(importDTO, product);
 		ImportHistoryRepository.save(importHistory);
 	}
+
+	@Override
+	public void setSalePrice(Long productId, BigDecimal price) {
+		Product product = getById(productId);
+		product.setSalePrice(price);
+		productRepository.save(product); 
+	}
+
+	/*@Override
+	public void validateStock(Long productId, Integer numberOfUnit) {
+		
+	}*/
 
 }
