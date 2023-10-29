@@ -8,8 +8,6 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 
 import lombok.Data;
 
@@ -25,7 +23,6 @@ public class ProductImportDTO {
 	private BigDecimal importPrice;
 	
 	@NotNull(message = "Import date cannot be null")
-	@JsonDeserialize(using = LocalDateTimeDeserializer.class)
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime importDate; 
 }

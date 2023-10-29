@@ -88,6 +88,7 @@ public class SaleServiceImpl implements SaleService {
 		saleDTO.getProducts()
 			.forEach(ps -> {
 				Product product = productMap.get(ps.getProductId());
+				
 				SaleDetail saleDetail = new SaleDetail(); 
 				saleDetail.setAmount(product.getSalePrice());
 				saleDetail.setProduct(product);
