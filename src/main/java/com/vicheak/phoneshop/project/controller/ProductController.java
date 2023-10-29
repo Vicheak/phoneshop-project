@@ -1,5 +1,7 @@
 package com.vicheak.phoneshop.project.controller;
 
+import java.util.Map;
+
 import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
@@ -7,7 +9,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.vicheak.phoneshop.project.dto.PriceDTO;
 import com.vicheak.phoneshop.project.dto.ProductDTO;
@@ -44,6 +48,12 @@ public class ProductController {
 										  @RequestBody PriceDTO priceDTO){
 		productService.setSalePrice(productId, priceDTO.getPrice()); 
 		return ResponseEntity.ok().build();
+	}
+	
+	@PostMapping("/uploadProduct")
+	public ResponseEntity<?> uploadProduct(@RequestPart("file") MultipartFile file){
+		Map<Integer, String> errorMap = productService.uploadProduct(file); 
+		return ResponseEntity.ok(errorMap); 
 	}
 
 }
