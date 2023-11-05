@@ -14,6 +14,7 @@ import com.vicheak.phoneshop.project.entity.Product;
 import com.vicheak.phoneshop.project.entity.Sale;
 import com.vicheak.phoneshop.project.entity.SaleDetail;
 import com.vicheak.phoneshop.project.exception.ApiException;
+import com.vicheak.phoneshop.project.exception.ResourceNotFoundException;
 import com.vicheak.phoneshop.project.repository.ProductRepository;
 import com.vicheak.phoneshop.project.repository.SaleDetailRepository;
 import com.vicheak.phoneshop.project.repository.SaleRepository;
@@ -103,56 +104,38 @@ public class SaleServiceImpl implements SaleService {
 			});
 	}
 	
-	/*private void validate1(SaleDTO saleDTO) {
-		List<Long> productIds = saleDTO.getProducts().stream()
-			.map(ProductSoldDTO::getProductId)
-			.toList();
-			
-		//validate product
-		productIds.forEach(productService::getById);
+	@Override
+	public Sale getById(Long saleId) {
+		return saleRepository.findById(saleId)
+					.orElseThrow(
+						() -> new ResourceNotFoundException("Sale", saleId)
+					);
+	}
+
+	@Override
+	public void cancelSale(Long saleId) {
+		//update sale status
+		Sale sale = getById(saleId); 
+		sale.setActive(false); 
+		saleRepository.save(sale);
+		
+		//update stock
+		List<SaleDetail> saleDetails = saleDetailRepository.findBySaleId(saleId); 
+		
+		List<Long> productIds = saleDetails.stream()
+				.map(sd -> sd.getProduct().getId())
+				.toList(); 
 		
 		List<Product> products = productRepository.findAllById(productIds);
 		Map<Long, Product> productMap = products.stream()
 				.collect(Collectors.toMap(Product::getId, Function.identity()));
 		
-		//validate stock
-		saleDTO.getProducts().
-			forEach(ps -> {
-				Product product = productMap.get(ps.getProductId());
-				if(product.getAvailableUnit() < ps.getNumberOfUnit()) {
-					throw new ApiException(HttpStatus.BAD_REQUEST,
-							"Product [%s] is not enough in stock"
-							.formatted(product.getName()));
-				}
-			});
-	}*/
-
-	/*private void validate(SaleDTO saleDTO) {
-		 saleDTO.getProducts().forEach(ps -> {
-    		 //validate product
-			 Product product = productService.getById(ps.getProductId());
-			 //validate stock
-			 if(product.getAvailableUnit() < ps.getNumberOfUnit()) {
-					throw new ApiException(HttpStatus.BAD_REQUEST,
-							"Product [%s] is not enough in stock"
-							.formatted(product.getName()));
-			}
-		 });
-	}*/
-	
-	/*private void saveSale(SaleDTO saleDTO) {
-		//Sale
-		Sale sale = new Sale(); 
-		sale.setSoldDate(saleDTO.getSaleDate()); 
-		saleRepository.save(sale); 
-		
-		//Sale Detail
-		saleDTO.getProducts().forEach(ps -> {
-			//Product product = productService.getById(ps.getProductId());
-			
-			SaleDetail saleDetail = new SaleDetail(); 
-			saleDetail.setAmount(null);
+		saleDetails.forEach(sd -> {
+			Product product = productMap.get(sd.getProduct().getId()); 
+			product.setAvailableUnit(product.getAvailableUnit() + sd.getUnit());
+			productRepository.save(product); 
 		});
-	}*/
-
+		
+	}
+	
 }
