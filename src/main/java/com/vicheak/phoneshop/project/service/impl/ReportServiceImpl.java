@@ -56,6 +56,7 @@ public class ReportServiceImpl implements ReportService {
 		Map<Long, Product> productMap = productRepository.findAllById(productIds).stream()
 			.collect(Collectors.toMap(Product::getId, Function.identity()));
 		
+		//group by product id
 		Map<Product, List<SaleDetail>> saleDetailMap = saleDetails.stream()
 			.collect(Collectors.groupingBy(SaleDetail::getProduct));
 		
@@ -89,7 +90,5 @@ public class ReportServiceImpl implements ReportService {
 		
 		return list; 
 	}
-	
-	
 	
 }

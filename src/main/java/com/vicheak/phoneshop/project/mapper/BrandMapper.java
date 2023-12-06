@@ -1,7 +1,6 @@
 package com.vicheak.phoneshop.project.mapper;
 
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 import com.vicheak.phoneshop.project.dto.BrandDTO;
