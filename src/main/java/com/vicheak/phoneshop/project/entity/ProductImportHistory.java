@@ -1,6 +1,7 @@
 package com.vicheak.phoneshop.project.entity;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
@@ -27,8 +28,8 @@ public class ProductImportHistory {
 	private Long id; 
 	
 	@Column(name = "date_import")
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	private LocalDateTime dateImport; 
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	private LocalDate dateImport; 
 	
 	@Column(name = "import_unit")
 	private Integer importUnit; 
