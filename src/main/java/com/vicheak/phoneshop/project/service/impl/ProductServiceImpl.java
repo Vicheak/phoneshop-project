@@ -2,6 +2,7 @@ package com.vicheak.phoneshop.project.service.impl;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -144,7 +145,7 @@ public class ProductServiceImpl implements ProductService {
 					
 					//save product import history
 					ProductImportHistory importHistory = new ProductImportHistory();
-					importHistory.setDateImport(importDate);
+					importHistory.setDateImport(importDate.toLocalDate());
 					importHistory.setImportUnit(importUnit);
 					importHistory.setPricePerUnit(BigDecimal.valueOf(importPrice));
 					importHistory.setProduct(product);
