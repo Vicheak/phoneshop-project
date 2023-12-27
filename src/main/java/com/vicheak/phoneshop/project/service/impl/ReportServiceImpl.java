@@ -3,6 +3,7 @@ package com.vicheak.phoneshop.project.service.impl;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -142,6 +143,9 @@ public class ReportServiceImpl implements ReportService {
 	    	
 	    	expenseReportDTOs.add(expenseReportDTO); 
 	    }
+	    
+	    Collections.sort(expenseReportDTOs, 
+	    		(a, b) -> (int)(a.getProductId() - b.getProductId()));
 		
 		return expenseReportDTOs;
 	}
