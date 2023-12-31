@@ -9,11 +9,15 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+
+import com.vicheak.phoneshop.project.config.jwt.JwtLoginFilter;
+import com.vicheak.phoneshop.project.config.jwt.TokenVerifyFilter;
 
 import static com.vicheak.phoneshop.project.config.security.PermissionEnum.*;
 
@@ -31,6 +35,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		//change from form-based to basic auth
 		http.csrf().disable()
+			//add the customized interceptor
+			.addFilter(new JwtLoginFilter(authenticationManager()))
+			.addFilterAfter(new TokenVerifyFilter(), JwtLoginFilter.class)
+			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+			.and()
 			.authorizeRequests()
 			.antMatchers("/", "index.html", "css/**", "js/**").permitAll()
 			//.antMatchers("/models").hasRole(RoleEnum.SALE.name())
@@ -40,9 +49,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			//.antMatchers(HttpMethod.POST, "/brands").hasAuthority(BRAND_WRITE.getDescription())
 			//.antMatchers(HttpMethod.GET, "/brands").hasAuthority(BRAND_READ.getDescription())
 			.anyRequest()
-			.authenticated()
-			.and()
-			.httpBasic();
+			.authenticated(); 
+			//.and()
+			//.httpBasic();
+	
 	}
 	
 	@Bean
