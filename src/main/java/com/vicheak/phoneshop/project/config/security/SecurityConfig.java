@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;import org.springf
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -30,6 +33,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder; 
+	@Autowired
+	private UserDetailsService userDetailsService;
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -52,10 +57,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.authenticated(); 
 			//.and()
 			//.httpBasic();
-	
 	}
 	
-	@Bean
+	/*@Bean
 	@Override
 	protected UserDetailsService userDetailsService() {
 		
@@ -79,6 +83,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				new InMemoryUserDetailsManager(user1, user2);
 		
 		return userDetailsService;
+	}*/
+	
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth.authenticationProvider(getAuthenticationProvider());
+	}
+	
+	@Bean
+	public AuthenticationProvider getAuthenticationProvider() {
+		DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+		authenticationProvider.setUserDetailsService(userDetailsService);
+		//set password encoder for decryption
+		authenticationProvider.setPasswordEncoder(passwordEncoder);
+		return authenticationProvider; 
 	}
 
 }
