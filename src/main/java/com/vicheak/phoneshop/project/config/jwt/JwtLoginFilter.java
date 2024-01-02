@@ -2,6 +2,7 @@ package com.vicheak.phoneshop.project.config.jwt;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 import javax.servlet.FilterChain;
@@ -59,6 +60,7 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
 				.issuedAt(new Date())
 				.claim("authorities", authResult.getAuthorities())
 				.expiration(java.sql.Date.valueOf(LocalDate.now().plusDays(7)))
+				//.expiration(java.sql.Date.valueOf(LocalDate.now()))
 				.issuer("phoneshop.com")
 				.signWith(Keys.hmacShaKeyFor(secretKey.getBytes()))
 				.compact();
