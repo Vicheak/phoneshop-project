@@ -9,8 +9,12 @@ import javax.persistence.Table;
 
 import com.vicheak.phoneshop.project.config.security.AuditEntity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 @Entity
 @Table(name = "brands")
