@@ -17,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.vicheak.phoneshop.project.config.jwt.FilterChainExceptionHandler;
 import com.vicheak.phoneshop.project.config.jwt.JwtLoginFilter;
 import com.vicheak.phoneshop.project.config.jwt.TokenVerifyFilter;
 
@@ -29,13 +30,18 @@ public class SecurityConfig {
 	@Autowired
 	private UserDetailsService userDetailsService;
 	@Autowired
+	private FilterChainExceptionHandler filterChainExceptionHandler;
+	@Autowired
 	private AuthenticationConfiguration authConfig; 
 
 	@Bean
 	public SecurityFilterChain configure(HttpSecurity http) throws Exception {
 		http.csrf().disable()
+		
 				.addFilter(new JwtLoginFilter(authenticationManager(authConfig)))
+				.addFilterBefore(filterChainExceptionHandler, JwtLoginFilter.class)
 				.addFilterAfter(new TokenVerifyFilter(), JwtLoginFilter.class)
+				
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 				.and()
 				.authorizeRequests()
